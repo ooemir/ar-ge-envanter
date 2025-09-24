@@ -1,0 +1,13 @@
+# Node/JS
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Sample DB outputs
+sample-db/

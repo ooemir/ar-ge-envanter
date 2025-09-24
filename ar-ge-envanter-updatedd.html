@@ -1,0 +1,2040 @@
+<html lang="tr"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ar-Ge Envanter Sistemi</title>
+
+    <!-- ==================== CSS BAŞLANGIÇ ==================== -->
+    <style>
+        /* Reset ve Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #f9fafb;
+            min-height: 100vh;
+            color: #111827;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .header p {
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        /* Export/Import buttons in header */
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .header-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background: white;
+            color: #374151;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-button:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        .export-button {
+            color: #059669;
+            border-color: #a7f3d0;
+        }
+
+        .export-button:hover {
+            background: #ecfdf5;
+            border-color: #6ee7b7;
+        }
+
+        .import-button {
+            color: #2563eb;
+            border-color: #bfdbfe;
+        }
+
+        .import-button:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        .download-html-button {
+            color: #7c2d12;
+            border-color: #fed7aa;
+            background: #fff7ed;
+        }
+
+        .download-html-button:hover {
+            background: #ffedd5;
+            border-color: #fdba74;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        /* Navigation Styles */
+        .main-nav {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .main-nav-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-button {
+            padding: 1rem 0.25rem;
+            border: none;
+            background: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-button.active {
+            border-bottom-color: #3b82f6;
+            color: #2563eb;
+        }
+
+        .nav-button:not(.active) {
+            color: #6b7280;
+        }
+
+        .nav-button:not(.active):hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .category-nav-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .category-button {
+            padding: 0.75rem 1rem;
+            white-space: nowrap;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-bottom: 2px solid transparent;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-button.active {
+            border-bottom-color: #10b981;
+            color: #059669;
+            background: white;
+        }
+
+        .category-button:not(.active) {
+            color: #4b5563;
+        }
+
+        .category-button:not(.active):hover {
+            color: #1f2937;
+            border-bottom-color: #d1d5db;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Dashboard Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--from), var(--to));
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card.blue {
+            --from: #3b82f6;
+            --to: #2563eb;
+        }
+
+        .stat-card.green {
+            --from: #10b981;
+            --to: #059669;
+        }
+
+        .stat-card.yellow {
+            --from: #f59e0b;
+            --to: #d97706;
+        }
+
+        .stat-card.red {
+            --from: #ef4444;
+            --to: #dc2626;
+        }
+
+        .stat-text {
+            opacity: 0.8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .stat-icon {
+            width: 2rem;
+            height: 2rem;
+            opacity: 0.7;
+        }
+
+        /* Alert Box */
+        .alert {
+            background: #fef2f2;
+            border-left: 4px solid #f87171;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #f87171;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .alert h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #991b1b;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-text {
+            font-size: 0.875rem;
+            color: #b91c1c;
+        }
+
+        .alert ul {
+            margin-top: 0.5rem;
+            list-style-type: disc;
+            margin-left: 1.25rem;
+        }
+
+        /* White Box Container */
+        .white-box {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-filter {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+        }
+
+        .search-input-container {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .search-input,
+        .filter-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .search-input {
+            padding-left: 2.5rem;
+        }
+
+        .search-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Add Button */
+        .add-button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-button {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .add-button:hover {
+            background: #1d4ed8;
+        }
+
+        .button-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+        }
+
+        .part-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .part-number {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-number {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-normal {
+            color: #065f46;
+        }
+
+        .status-low {
+            color: #92400e;
+        }
+
+        .status-critical {
+            color: #991b1b;
+        }
+
+        /* Stock Status Row Colors */
+        .row-normal {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .row-low {
+            background: #fffbeb;
+            border-color: #fed7aa;
+        }
+
+        .row-critical {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            background: none;
+        }
+
+        .edit-button {
+            color: #2563eb;
+        }
+
+        .edit-button:hover {
+            background: #eff6ff;
+        }
+
+        .delete-button {
+            color: #dc2626;
+        }
+
+        .delete-button:hover {
+            background: #fef2f2;
+        }
+
+        .action-icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Low Stock Items Grid */
+        .low-stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .low-stock-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 2px solid;
+        }
+
+        .low-stock-item h3 {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .low-stock-item p {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .low-stock-footer {
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .low-stock-quantity {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 28rem;
+            width: 100%;
+        }
+
+        .modal-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .cancel-button {
+            padding: 0.5rem 1rem;
+            color: #374151;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .cancel-button:hover {
+            background: #e5e7eb;
+        }
+
+        .confirm-button {
+            padding: 0.5rem 1rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .confirm-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Info Box Styles */
+        .info-box {
+            background: #f0f9ff;
+            border: 1px solid #7dd3fc;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box h4 {
+            color: #0c4a6e;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box p {
+            color: #075985;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .active-category {
+            text-align: right;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .active-category span {
+            font-weight: 600;
+            color: #059669;
+        }
+    </style>
+    <!-- ==================== CSS BİTİŞ ==================== -->
+</head>
+
+<!-- ==================== HTML BAŞLANGIÇ ==================== -->
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>Ar-Ge Envanter Sistemi</h1>
+                <p>Araştırma ve Geliştirme Merkezi</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-button export-button" onclick="exportData()">
+                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    JSON Dışa Aktar
+                </button>
+                <button class="header-button import-button" onclick="document.getElementById('importFile').click()">
+                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10">
+                        </path>
+                    </svg>
+                    JSON İçe Aktar
+                </button>
+                <button class="header-button download-html-button" onclick="downloadUpdatedHTML()">
+                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    HTML İndir
+                </button>
+                <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">Yeni parça başarıyla eklendi! HTML dosyasına kaydetmek için "HTML İndir" butonunu kullanın.</div>
+
+    <!-- Main Navigation -->
+    <div class="main-nav">
+        <div class="main-nav-content">
+            <button class="nav-button" onclick="showDashboard()">Ana Sayfa</button>
+            <button class="nav-button active" onclick="showInventoryList()">Envanter Listesi</button>
+        </div>
+    </div>
+
+    <!-- Category Navigation (hidden by default) -->
+    <div class="category-nav" id="categoryNav" style="display: block;">
+        <div class="category-nav-content">
+            <button class="category-button" onclick="switchCategory('optoelectronics')">Optoelectronics</button>
+            <button class="category-button" onclick="switchCategory('resistors')">Resistors</button>
+            <button class="category-button" onclick="switchCategory('capacitors')">Capacitors</button>
+            <button class="category-button" onclick="switchCategory('Inductors')">Inductors</button>
+            <button class="category-button" onclick="switchCategory('Relay')">Relay</button>
+            <button class="category-button active" onclick="switchCategory('Development Boards, Kits, Programmers')">Development Boards, Kits,
+                Programmers</button>
+            <button class="category-button" onclick="switchCategory('Test and Measurement')">Test and
+                Measurement</button>
+            <button class="category-button" onclick="switchCategory('Sensors, Transducers')">Sensors,
+                Transducers</button>
+            <button class="category-button" onclick="switchCategory('Audio Products')">Audio Products</button>
+            <button class="category-button" onclick="switchCategory('Motors, Actuators, Solenoidscand Drivers')">Motors, Actuators, Solenoidscand
+                Drivers</button>
+            <button class="category-button" onclick="switchCategory('Power Supplies - Board Mount')">Power
+                Supplies - Board Mount</button>
+            <button class="category-button" onclick="switchCategory('Integrated Circuits (ICs)')">Integrated
+                Circuits (ICs)</button>
+            <button class="category-button" onclick="switchCategory('Hardware, Fasteners, Accessories')">Hardware,
+                Fasteners, Accessories</button>
+            <button class="category-button" onclick="switchCategory('Switches')">Switches</button>
+            <button class="category-button" onclick="switchCategory('Connectors')">Connectors</button>
+            <button class="category-button" onclick="switchCategory('Cable,Wires')">Cable,Wires</button>
+            <button class="category-button" onclick="switchCategory('Battery Products')">Battery
+                Products</button>
+            <button class="category-button" onclick="switchCategory('Cable Assemblies')">Cable
+                Assemblies</button>
+            <button class="category-button" onclick="switchCategory('Crystal')">Crystal</button>
+            <button class="category-button" onclick="switchCategory('RF and Wireless')">RF and Wireless</button>
+            <button class="category-button" onclick="switchCategory('Potantiometer, Variable Resistors')">Potantiometer, Variable Resistors</button>
+            <button class="category-button" onclick="switchCategory('Circuit Protection')">Circuit
+                Protection</button>
+            <button class="category-button" onclick="switchCategory('Transformer')">Transformer</button>
+            <button class="category-button" onclick="switchCategory('Diode')">Diode</button>
+            <button class="category-button" onclick="switchCategory('BJT')">BJT</button>
+            <button class="category-button" onclick="switchCategory('MOSFET')">MOSFET</button>
+            <button class="category-button" onclick="switchCategory('JFET')">JFET</button>
+            <button class="category-button" onclick="switchCategory('Filters')">Filters</button>
+            <button class="category-button" onclick="switchCategory('Islolators')">Islolators</button>
+
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard View -->
+        <div id="dashboardView" class="hidden">
+            <!-- Info Box -->
+            <div class="info-box">
+                <h4>
+                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Taşınabilir Envanter Sistemi
+                </h4>
+                <p>Bu sistem değişikliklerinizi HTML dosyasına "gömebilir". Veri ekledikten sonra "HTML İndir" butonuna
+                    tıklayın ve yeni HTML dosyasını başkalarıyla paylaşın - eklediğiniz veriler dosyada kalıcı olarak
+                    bulunacak!</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div>
+                        <div class="stat-text">Toplam Parça</div>
+                        <div class="stat-number" id="totalParts">144</div>
+                    </div>
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path>
+                    </svg>
+                </div>
+
+                <div class="stat-card green">
+                    <div>
+                        <div class="stat-text">Kategori Sayısı</div>
+                        <div class="stat-number">3</div>
+                    </div>
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
+                </div>
+
+                <div class="stat-card yellow">
+                    <div>
+                        <div class="stat-text">Düşük Stok</div>
+                        <div class="stat-number" id="lowStockCount">3</div>
+                    </div>
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                    </svg>
+                </div>
+
+                <div class="stat-card red">
+                    <div>
+                        <div class="stat-text">Kritik Stok</div>
+                        <div class="stat-number" id="criticalStockCount">1</div>
+                    </div>
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.98-.833-2.75 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Critical Stock Alert -->
+            <div class="alert show" id="criticalAlert">
+                <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.98-.833-2.75 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+                    </path>
+                </svg>
+                <div>
+                    <h3>Kritik Stok Uyarısı!</h3>
+                    <div class="alert-text">
+                        <p>Aşağıdaki ürünlerin stok seviyeleri kritik durumda:</p>
+                        <ul>
+                            <li>100nF Capacitor - Kalan: 2</li>
+                            <li>10K Ohm Resistor - Kalan: 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Items -->
+            <div class="white-box">
+                <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb; display:flex; align-items:center; justify-content:space-between; gap:.5rem; flex-wrap:wrap;">
+                    <h2 style="font-size: 1.125rem; font-weight: 600; color: #111827; display: flex; align-items: center;">
+                        <svg style="height: 1.25rem; width: 1.25rem; margin-right: 0.5rem; color: #f59e0b;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                        </svg>
+                        Stok Seviyesi Düşük Ürünler
+                    </h2>
+                    <div style="display:flex; gap:.5rem;">
+                        <button class="header-button" id="toggleLowStockBtn" onclick="toggleLowStock()">Tümünü Göster</button>
+                        <button class="header-button" onclick="gotoLowStockList()">Listeye Git</button>
+                    </div>
+                </div>
+                <div class="low-stock-grid" id="lowStockGrid">
+                    <div class="low-stock-item row-critical">
+                        <h3>100nF Capacitor</h3>
+                        <p>CAP-100N-0805</p>
+                        <div class="low-stock-footer">
+                            <span class="status-badge status-critical">Kritik</span>
+                            <span class="low-stock-quantity">2</span>
+                        </div>
+                    </div>
+                    <div class="low-stock-item row-low">
+                        <h3>10K Ohm Resistor</h3>
+                        <p>RES-10K-0603</p>
+                        <div class="low-stock-footer">
+                            <span class="status-badge status-low">Düşük</span>
+                            <span class="low-stock-quantity">3</span>
+                        </div>
+                    </div>
+                    <div class="low-stock-item row-low">
+                        <h3>Red LED</h3>
+                        <p>WP934CB/ID</p>
+                        <div class="low-stock-footer">
+                            <span class="status-badge status-low">Düşük</span>
+                            <span class="low-stock-quantity">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory List View (hidden by default) -->
+        <div id="inventoryView" class="">
+            <div class="active-category">
+                Aktif Kategori: <span id="currentCategoryName">Development Boards, Kits, Programmers</span>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="white-box" style="margin-bottom: 1.5rem;">
+                <div class="search-filter">
+                    <div class="search-input-container">
+                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Parça adı veya numarası ile ara..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="categoryFilter"><option value="">Tüm Alt Kategoriler</option><option value="12">12</option></select>
+                </div>
+            </div>
+
+            <!-- Add Button -->
+            <div class="add-button-container">
+                <button class="add-button" onclick="showAddModal()">
+                    <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Yeni Parça Ekle
+                </button>
+            </div>
+
+            <!-- Inventory Table -->
+            <div class="white-box">
+                <div class="table-container">
+                    <table>
+                        <thead id="inventoryHeader">
+                            <tr>
+                                        <th>#</th>
+                                        <th>Parça Bilgisi</th>
+                                        <th>Miktar</th>
+                                        <th>Durum</th>
+                                        <th>Konum</th>
+                                        <th>Açıklama</th>
+                                        <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTable">
+                <tr class="row-normal">
+                    <td>1</td>
+                    <td>
+                        <div class="part-name">12</div>
+                        <div class="part-number">213</div>
+                    </td>
+                    <td>
+                        <div class="quantity-container">
+                            <span class="quantity-number">1212</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-normal">Normal</span>
+                    </td>
+                    <td>123123</td>
+                    <td>3123</td>
+                    <td>
+                        <div class="actions">
+                            <button class="action-button edit-button" onclick="editItem(1)">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="action-button delete-button" onclick="deleteItem(1)">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Yeni Parça Ekle</h3>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="modal-input" placeholder="Parça Numarası" id="newPartNumber">
+                <input type="text" class="modal-input" placeholder="Parça Adı" id="newPartName">
+                <input type="number" class="modal-input" placeholder="Miktar" id="newQuantity">
+                <input type="text" class="modal-input" placeholder="Konum (Raf, Kutu No)" id="newLocation">
+                <input type="text" class="modal-input" placeholder="Açıklama" id="newDescription">
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-button" onclick="hideAddModal()">İptal</button>
+                <button class="confirm-button" onclick="addItem()">Ekle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Parçayı Düzenle</h3>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="modal-input" placeholder="Parça Numarası" id="editPartNumber">
+                <input type="text" class="modal-input" placeholder="Parça Adı" id="editPartName">
+                <input type="number" class="modal-input" placeholder="Miktar" id="editQuantity">
+                <input type="text" class="modal-input" placeholder="Konum" id="editLocation">
+                <input type="text" class="modal-input" placeholder="Açıklama" id="editDescription">
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-button" onclick="hideEditModal()">İptal</button>
+                <button class="confirm-button" onclick="updateItem()">Güncelle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JavaScript BAŞLANGIÇ ==================== -->
+    <script>
+        // Global variables
+        let currentView = 'dashboard';
+        let currentCategory = 'capacitors';
+        let editingItemId = null;
+        let showAllLowStock = false;
+        const MAX_LOW_STOCK_DISPLAY = 12;
+        const MAX_CRITICAL_ALERT = 5;
+
+        // EMBEDDED DATA - This section will be updated when downloading HTML
+                /* DATA_START */
+        let categories = {
+                  "optoelectronics": {
+                            "name": "Optoelectronics",
+                            "data": [
+                                      {
+                                                "id": 1,
+                                                "partNumber": "LTW-010DCG",
+                                                "partName": "White LED",
+                                                "quantity": 9,
+                                                "location": "Raf A1-K1",
+                                                "description": "White LED Indication - Discrete 3.3V 2-SMD, J-Lead"
+                                      },
+                                      {
+                                                "id": 2,
+                                                "partNumber": "WP934CB/GD",
+                                                "partName": "Green LED",
+                                                "quantity": 10,
+                                                "location": "Raf B1-K1",
+                                                "description": "LED Circuit Board Indicator Single Green"
+                                      },
+                                      {
+                                                "id": 3,
+                                                "partNumber": "WP934CB/ID",
+                                                "partName": "Red LED",
+                                                "quantity": 5,
+                                                "location": "Raf C1-K1",
+                                                "description": "LED Circuit Board Indicator Single Red"
+                                      }
+                            ]
+                  },
+                  "resistors": {
+                            "name": "Resistors",
+                            "data": [
+                                      {
+                                                "id": 1,
+                                                "partNumber": "RES-1K-0805",
+                                                "partName": "1K Ohm Resistor",
+                                                "quantity": 100,
+                                                "location": "Raf R1-K1",
+                                                "description": "1K Ohm ±5% 0805 SMD Resistor"
+                                      },
+                                      {
+                                                "id": 2,
+                                                "partNumber": "RES-10K-0603",
+                                                "partName": "10K Ohm Resistor",
+                                                "quantity": 3,
+                                                "location": "Raf R1-K2",
+                                                "description": "10K Ohm ±1% 0603 SMD Resistor"
+                                      },
+                                      {
+                                                "id": 3,
+                                                "partNumber": "213",
+                                                "partName": "12312",
+                                                "quantity": 3123123,
+                                                "location": "312",
+                                                "description": "123"
+                                      },
+                                      {
+                                                "id": 4,
+                                                "partNumber": "321",
+                                                "partName": "234",
+                                                "quantity": 32,
+                                                "location": "3223",
+                                                "description": "3223"
+                                      }
+                            ]
+                  },
+                  "capacitors": {
+                            "name": "Capacitors",
+                            "data": [
+                                      {
+                                                "id": 1,
+                                                "partNumber": "CAP-100N-0805",
+                                                "partName": "100nF Capacitor",
+                                                "quantity": 2,
+                                                "location": "Raf C1-K1",
+                                                "description": "100nF ±10% X7R 0805 Ceramic Capacitor"
+                                      },
+                                      {
+                                                "id": 2,
+                                                "partNumber": "CAP-10U-TANT",
+                                                "partName": "10µF Tantalum",
+                                                "quantity": 15,
+                                                "location": "Raf C2-K1",
+                                                "description": "10µF ±20% 16V Tantalum Capacitor"
+                                      },
+                                      {
+                                                "id": 3,
+                                                "partNumber": "213",
+                                                "partName": "32141",
+                                                "quantity": 4312132,
+                                                "location": "32141324",
+                                                "description": "41324"
+                                      }
+                            ]
+                  },
+                  "Inductors": {
+                            "name": "Inductors",
+                            "data": []
+                  },
+                  "Relay": {
+                            "name": "Relay",
+                            "data": []
+                  },
+                  "Development Boards, Kits, Programmers": {
+                            "name": "Development Boards, Kits, Programmers",
+                            "data": [
+                                      {
+                                                "id": 1,
+                                                "partNumber": "213",
+                                                "partName": "12",
+                                                "quantity": 1212,
+                                                "location": "123123",
+                                                "description": "3123"
+                                      }
+                            ]
+                  },
+                  "Test and Measurement": {
+                            "name": "Test and Measurement",
+                            "data": []
+                  },
+                  "Sensors, Transducers": {
+                            "name": "Sensors, Transducers",
+                            "data": []
+                  },
+                  "Audio Products": {
+                            "name": "Audio Products",
+                            "data": []
+                  },
+                  "Motors, Actuators, Solenoidscand Drivers": {
+                            "name": "Motors, Actuators, Solenoidscand Drivers",
+                            "data": []
+                  },
+                  "Power Supplies - Board Mount": {
+                            "name": "Power Supplies - Board Mount",
+                            "data": []
+                  },
+                  "Integrated Circuits (ICs)": {
+                            "name": "Integrated Circuits (ICs)",
+                            "data": []
+                  },
+                  "Hardware, Fasteners, Accessories": {
+                            "name": "Hardware, Fasteners, Accessories",
+                            "data": []
+                  },
+                  "Switches": {
+                            "name": "Switches",
+                            "data": []
+                  },
+                  "Connectors": {
+                            "name": "Connectors",
+                            "data": []
+                  },
+                  "Cable,Wires": {
+                            "name": "Cable,Wires",
+                            "data": []
+                  },
+                  "Battery Products": {
+                            "name": "Battery Products",
+                            "data": []
+                  },
+                  "Cable Assemblies": {
+                            "name": "Cable Assemblies",
+                            "data": []
+                  },
+                  "Crystal": {
+                            "name": "Crystal",
+                            "data": []
+                  },
+                  "RF and Wireless": {
+                            "name": "RF and Wireless",
+                            "data": []
+                  },
+                  "Potantiometer, Variable Resistors": {
+                            "name": "Potantiometer, Variable Resistors",
+                            "data": []
+                  },
+                  "Circuit Protection": {
+                            "name": "Circuit Protection",
+                            "data": []
+                  },
+                  "Transformer": {
+                            "name": "Transformer",
+                            "data": []
+                  },
+                  "Diode": {
+                            "name": "Diode",
+                            "data": []
+                  },
+                  "BJT": {
+                            "name": "BJT",
+                            "data": []
+                  },
+                  "MOSFET": {
+                            "name": "MOSFET",
+                            "data": []
+                  },
+                  "JFET": {
+                            "name": "JFET",
+                            "data": []
+                  },
+                  "Filters": {
+                            "name": "Filters",
+                            "data": []
+                  },
+                  "Islolators": {
+                            "name": "Islolators",
+                            "data": []
+                  }
+        };
+        /* DATA_END */
+
+        // Export Data Function
+        function exportData() {
+            const dataToExport = {
+                categories: categories,
+                exportDate: new Date().toISOString(),
+                version: "1.0"
+            };
+
+            const dataStr = JSON.stringify(dataToExport, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `ar-ge-envanter-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showSuccessMessage('JSON veriler başarıyla dışa aktarıldı!');
+        }
+
+        // Import Data Function
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/json') {
+                alert('Lütfen geçerli bir JSON dosyası seçin.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    // Validate imported data structure
+                    if (importedData.categories && typeof importedData.categories === 'object') {
+                        const confirmed = confirm(
+                            'Bu işlem mevcut tüm verileri değiştirecek. ' +
+                            'Devam etmek istediğinizden emin misiniz?' +
+                            '\n\nNot: Kalıcı hale getirmek için "HTML İndir" butonunu kullanmayı unutmayın.'
+                        );
+
+                        if (confirmed) {
+                            categories = importedData.categories;
+
+                            // Refresh all views
+                            updateDashboard();
+                            updateInventoryTable();
+                            updateCategoryFilter();
+
+                            // Switch to dashboard to show updated stats
+                            showDashboard();
+
+                            showSuccessMessage('JSON veriler başarıyla içe aktarıldı!');
+                        }
+                    } else {
+                        alert('Geçersiz dosya formatı. Doğru JSON yapısına sahip bir dosya seçin.');
+                    }
+                } catch (error) {
+                    alert('Dosya okunamadı. Lütfen geçerli bir JSON dosyası seçin.');
+                }
+
+                // Reset file input
+                event.target.value = '';
+            };
+
+            reader.readAsText(file);
+        }
+
+        // Download Updated HTML Function
+        function downloadUpdatedHTML() {
+            // Get the current HTML
+            let htmlContent = document.documentElement.outerHTML;
+
+            // Create the updated data section
+            const updatedDataSection = `        /* DATA_START */
+        let categories = ${JSON.stringify(categories, null, 12).split('\n').join('\n        ')};
+        /* DATA_END */`;
+
+            // Replace the data section
+            const dataStartIndex = htmlContent.indexOf('/* DATA_START */');
+            const dataEndIndex = htmlContent.indexOf('/* DATA_END */') + '/* DATA_END */'.length;
+
+            if (dataStartIndex !== -1 && dataEndIndex !== -1) {
+                htmlContent = htmlContent.substring(0, dataStartIndex) +
+                    updatedDataSection +
+                    htmlContent.substring(dataEndIndex);
+            }
+
+            // Create and download the file
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `ar-ge-envanter-updated-${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showSuccessMessage('Güncel verilerle HTML dosyası indirildi!');
+        }
+
+        // Show Success Message
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Helper functions
+        function getStockStatus(quantity) {
+            if (quantity <= 2) return 'critical';
+            if (quantity <= 5) return 'low';
+            return 'normal';
+        }
+
+        function getStockStatusText(quantity) {
+            if (quantity <= 2) return 'Kritik';
+            if (quantity <= 5) return 'Düşük';
+            return 'Normal';
+        }
+
+        function getRowClass(quantity) {
+            if (quantity <= 2) return 'row-critical';
+            if (quantity <= 5) return 'row-low';
+            return 'row-normal';
+        }
+
+        function getStatusClass(quantity) {
+            if (quantity <= 2) return 'status-critical';
+            if (quantity <= 5) return 'status-low';
+            return 'status-normal';
+        }
+
+        // CSV → categories loader (Capacitors, Resistors, Inductors)
+        async function loadCsvDataAndMerge() {
+            // Helper: fetch local CSV file if accessible via same directory
+            async function fetchLocalCsv(fileName) {
+                // Önce kökten dene, sonra sample-db klasöründen dene
+                let url = encodeURI(fileName);
+                try {
+                    let res = await fetch(url);
+                    if (!res.ok) {
+                        // sample-db fallback
+                        url = encodeURI('sample-db/' + fileName);
+                        res = await fetch(url);
+                        if (!res.ok) {
+                            console.warn('CSV bulunamadı veya okunamadı:', url, res.status);
+                            return null;
+                        }
+                    }
+                    return await res.text();
+                } catch (e) {
+                    console.error('CSV fetch hatası:', fileName, e);
+                    return null;
+                }
+            }
+
+            function parseCsv(text) {
+                if (!text) return [];
+                const lines = text.split(/\r?\n/).filter(l => l.trim().length);
+                const rows = [];
+                for (let i = 1; i < lines.length; i++) { // skip header
+                    const line = lines[i];
+                    // naive CSV split handling quotes
+                    const cols = [];
+                    let cur = '';
+                    let inQ = false;
+                    for (let j = 0; j < line.length; j++) {
+                        const ch = line[j];
+                        if (ch === '"') { inQ = !inQ; continue; }
+                        if (ch === ',' && !inQ) { cols.push(cur); cur = ''; continue; }
+                        cur += ch;
+                    }
+                    cols.push(cur);
+                    rows.push(cols.map(c => c.trim()));
+                }
+                return rows;
+            }
+
+            function extractValueFromInfo(info) {
+                if (!info) return '';
+                const m = info.match(/(?:\b|\s)([0-9]+(?:\.[0-9]+)?\s*(?:f|pf|nf|µf|uf|mf|\u00b5f|r|ohm|k\s*ohm|k\s*Ω|kΩ|m\s*ohm|mΩ|Ω))/i);
+                return m ? m[1].replace(/\s+/g, '') : '';
+            }
+
+            // Prefer inductance units for Inductors (nH, uH/µH, mH, H). Falls back to generic if not found.
+            function extractInductanceValue(info) {
+                if (!info) return '';
+                const inductanceRegex = /([0-9]+(?:\.[0-9]+)?\s*(?:nH|µH|uH|mH|H))/i;
+                const m = info.match(inductanceRegex);
+                if (m) return m[1].replace(/\s+/g, '');
+                return extractValueFromInfo(info);
+            }
+
+            function normalizeQty(q) {
+                if (!q) return '100+'; // boşsa 100+
+                const n = parseInt(String(q).replace(/[^0-9]/g, ''), 10);
+                if (Number.isNaN(n)) return '100+';
+                return String(n);
+            }
+
+            // Capacitors
+            const capCsv = await fetchLocalCsv('Capacitors.csv');
+            if (capCsv) {
+                const rows = parseCsv(capCsv);
+                const capData = rows.map((r, idx) => {
+                    // Alt Kategori, description, mpn, quantity, link
+                    const alt = r[0] || '';
+                    const info = r[1] || '';
+                    const mpn = r[2] || '';
+                    const qty = normalizeQty(r[3]);
+                    const link = r[4] || '';
+                    const value = extractValueFromInfo(info);
+                    const partName = alt || (value ? `${value} Capacitor` : 'Capacitor');
+                    const description = link ? `<a href="${link}" target="_blank" rel="noopener">${info || mpn || link}</a>` : (info || mpn || '');
+                    return {
+                        id: idx + 1,
+                        partNumber: mpn || (value ? `CAP-${value}` : 'CAP'),
+                        partName,
+                        quantity: qty === '100+' ? 1000 : parseInt(qty, 10),
+                        location: '?',
+                        description,
+                        value
+                    };
+                });
+                categories['capacitors'] = { name: 'Capacitors', data: capData };
+            }
+
+            // Resistors
+            const resCsv = await fetchLocalCsv('Resistors.csv');
+            if (resCsv) {
+                const rows = parseCsv(resCsv);
+                // Now same order as Capacitors: Alt Kategori, description, mpn, quantity, link
+                const resData = rows.map((r, idx) => {
+                    const alt = r[0] || '';
+                    const info = r[1] || '';
+                    const mpn = r[2] || '';
+                    const qty = normalizeQty(r[3]);
+                    const link = r[4] || '';
+                    const value = extractValueFromInfo(info);
+                    const partName = alt || (value ? `${value} Resistor` : 'Resistor');
+                    const description = link ? `<a href="${link}" target="_blank" rel="noopener">${info || mpn || link}</a>` : (info || mpn || '');
+                    return {
+                        id: idx + 1,
+                        partNumber: mpn || (value ? `RES-${value}` : 'RES'),
+                        partName,
+                        quantity: qty === '100+' ? 1000 : parseInt(qty, 10),
+                        location: '?',
+                        description,
+                        value
+                    };
+                });
+                categories['resistors'] = { name: 'Resistors', data: resData };
+            }
+
+            // Inductors
+            const indCsv = await fetchLocalCsv('Inductor.csv');
+            if (indCsv) {
+                const rows = parseCsv(indCsv);
+                // Header: Column1,İNFO,MPN,Quantity,Link
+                const indData = rows.map((r, idx) => {
+                    const alt = r[0] || '';
+                    const info = r[1] || '';
+                    const mpn = r[2] || '';
+                    const qty = normalizeQty(r[3]);
+                    const link = r[4] || '';
+                    const value = extractInductanceValue(info); // prefer uH/mH/H/nH
+                    const partName = alt || (value ? `${value} Inductor` : 'Inductor');
+                    const description = link ? `<a href="${link}" target="_blank" rel="noopener">${info || mpn || link}</a>` : (info || mpn || '');
+                    return {
+                        id: idx + 1,
+                        partNumber: mpn || (value ? `IND-${value}` : 'IND'),
+                        partName,
+                        quantity: qty === '100+' ? 1000 : parseInt(qty, 10),
+                        location: '?',
+                        description,
+                        value
+                    };
+                });
+                categories['Inductors'] = { name: 'Inductors', data: indData };
+            }
+
+            // Other categories (default mapping)
+            const otherFiles = [
+                { file: 'Relays.csv', key: 'Relay', name: 'Relay' },
+                { file: 'Optoelectronics.csv', key: 'optoelectronics', name: 'Optoelectronics' },
+                { file: 'DevelopmentBoardsKitsProgrammers.csv', key: 'Development Boards, Kits, Programmers', name: 'Development Boards, Kits, Programmers' },
+                { file: 'AudioProducts.csv', key: 'Audio Products', name: 'Audio Products' },
+                { file: 'BatteryProducts.csv', key: 'Battery Products', name: 'Battery Products' },
+                { file: 'BJT.csv', key: 'BJT', name: 'BJT' },
+                { file: 'CableAssemblies.csv', key: 'Cable Assemblies', name: 'Cable Assemblies' },
+                { file: 'CableWires.csv', key: 'Cable,Wires', name: 'Cable,Wires' },
+                { file: 'CircuitProtection.csv', key: 'Circuit Protection', name: 'Circuit Protection' },
+                { file: 'Connectors.csv', key: 'Connectors', name: 'Connectors' },
+                { file: 'Crystal.csv', key: 'Crystal', name: 'Crystal' },
+                { file: 'Diode.csv', key: 'Diode', name: 'Diode' },
+                { file: 'Filters.csv', key: 'Filters', name: 'Filters' },
+                { file: 'HardwareFastenersAccessories.csv', key: 'Hardware, Fasteners, Accessories', name: 'Hardware, Fasteners, Accessories' },
+                { file: 'IntegratedCircuits.csv', key: 'Integrated Circuits (ICs)', name: 'Integrated Circuits (ICs)' },
+                { file: 'Isolators.csv', key: 'Islolators', name: 'Islolators' },
+                { file: 'JFET.csv', key: 'JFET', name: 'JFET' },
+                { file: 'MOSFET.csv', key: 'MOSFET', name: 'MOSFET' },
+                { file: 'MotorsActuatorsDrivers.csv', key: 'Motors, Actuators, Solenoidscand Drivers', name: 'Motors, Actuators, Solenoidscand Drivers' },
+                { file: 'PotentiometerVariableResistors.csv', key: 'Potantiometer, Variable Resistors', name: 'Potantiometer, Variable Resistors' },
+                { file: 'PowerSuppliesBoardMount.csv', key: 'Power Supplies - Board Mount', name: 'Power Supplies - Board Mount' },
+                { file: 'RFandWireless.csv', key: 'RF and Wireless', name: 'RF and Wireless' },
+                { file: 'SensorsTransducers.csv', key: 'Sensors, Transducers', name: 'Sensors, Transducers' },
+                { file: 'Switches.csv', key: 'Switches', name: 'Switches' },
+                { file: 'TestAndMeasurement.csv', key: 'Test and Measurement', name: 'Test and Measurement' },
+                { file: 'Transformer.csv', key: 'Transformer', name: 'Transformer' }
+            ];
+
+            for (const f of otherFiles) {
+                const txt = await fetchLocalCsv(f.file);
+                if (!txt) continue;
+                const rows = parseCsv(txt);
+                const data = rows.map((r, idx) => {
+                    // Alt Kategori, description, mpn, quantity, link
+                    const alt = r[0] || '';
+                    const info = r[1] || '';
+                    const mpn = r[2] || '';
+                    const qty = normalizeQty(r[3]);
+                    const link = r[4] || '';
+                    const partName = alt || (mpn ? mpn : 'Parça');
+                    const description = link ? `<a href="${link}" target="_blank" rel="noopener">${info || mpn || link}</a>` : (info || mpn || '');
+                    return {
+                        id: idx + 1,
+                        partNumber: mpn || partName,
+                        partName,
+                        quantity: qty === '100+' ? 1000 : parseInt(qty, 10),
+                        location: '?',
+                        description
+                    };
+                });
+                categories[f.key] = { name: f.name, data };
+            }
+        }
+
+        // Navigation functions
+        function showDashboard(evt) {
+            currentView = 'dashboard';
+            document.getElementById('dashboardView').classList.remove('hidden');
+            document.getElementById('inventoryView').classList.add('hidden');
+            document.getElementById('categoryNav').style.display = 'none';
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+            const ev = evt || window.event;
+            if (ev && ev.target && ev.target.classList) {
+                ev.target.classList.add('active');
+            } else {
+                const navButtons = document.querySelectorAll('.nav-button');
+                if (navButtons[0]) navButtons[0].classList.add('active');
+            }
+
+            updateDashboard();
+        }
+
+        function showInventoryList(evt) {
+            currentView = 'list';
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('inventoryView').classList.remove('hidden');
+            document.getElementById('categoryNav').style.display = 'block';
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+            const ev = evt || window.event;
+            if (ev && ev.target && ev.target.classList) {
+                ev.target.classList.add('active');
+            } else {
+                const navButtons = document.querySelectorAll('.nav-button');
+                if (navButtons[1]) navButtons[1].classList.add('active');
+            }
+
+            updateInventoryTable();
+        }
+
+        function switchCategory(categoryKey, evt) {
+            currentCategory = categoryKey;
+
+            // Update category nav buttons
+            document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+            const ev = evt || window.event;
+            if (ev && ev.target && ev.target.classList) {
+                ev.target.classList.add('active');
+            }
+
+            // Update current category name
+            document.getElementById('currentCategoryName').textContent = categories[categoryKey].name;
+
+            updateInventoryTable();
+            updateCategoryFilter();
+        }
+
+        // Dashboard update function
+        function updateDashboard() {
+            const allCategories = Object.keys(categories);
+            const allItems = Object.values(categories).flatMap(cat => cat.data);
+            const totalParts = allItems.reduce((sum, item) => sum + item.quantity, 0);
+            const lowStockItems = allItems.filter(item => item.quantity <= 5).sort((a,b)=>a.quantity-b.quantity);
+            const criticalStockItems = allItems.filter(item => item.quantity <= 2).sort((a,b)=>a.quantity-b.quantity);
+
+            // Kategori sayısını dinamik olarak güncelle
+            const categoryCountElem = document.querySelector('.stat-card.green .stat-number');
+            if (categoryCountElem) {
+                categoryCountElem.textContent = allCategories.length;
+            }
+
+            document.getElementById('totalParts').textContent = totalParts;
+            document.getElementById('lowStockCount').textContent = lowStockItems.length;
+            document.getElementById('criticalStockCount').textContent = criticalStockItems.length;
+
+            // Update low stock grid
+            updateLowStockGrid(lowStockItems);
+
+            // Update critical alert
+            updateCriticalAlert(criticalStockItems);
+        }
+
+        // Update low stock grid
+        function updateLowStockGrid(lowStockItems) {
+            const grid = document.getElementById('lowStockGrid');
+            const itemsToShow = showAllLowStock ? lowStockItems : lowStockItems.slice(0, MAX_LOW_STOCK_DISPLAY);
+            grid.innerHTML = itemsToShow.map(item => `
+                <div class="low-stock-item ${getRowClass(item.quantity)}">
+                    <h3>${item.partName}</h3>
+                    <p>${item.partNumber}</p>
+                    <div class="low-stock-footer">
+                        <span class="status-badge ${getStatusClass(item.quantity)}">${getStockStatusText(item.quantity)}</span>
+                        <span class="low-stock-quantity">${item.quantity}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            const toggleBtn = document.getElementById('toggleLowStockBtn');
+            if (toggleBtn) {
+                if (lowStockItems.length > MAX_LOW_STOCK_DISPLAY) {
+                    toggleBtn.style.display = 'inline-flex';
+                    toggleBtn.textContent = showAllLowStock ? 'Daha Az Göster' : `Tümünü Göster (${lowStockItems.length})`;
+                } else {
+                    toggleBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Update critical alert
+        function updateCriticalAlert(criticalStockItems) {
+            const alert = document.getElementById('criticalAlert');
+            if (criticalStockItems.length > 0) {
+                const list = criticalStockItems.slice(0, MAX_CRITICAL_ALERT).map(item =>
+                    `<li>${item.partName} - Kalan: ${item.quantity}</li>`
+                ).join('');
+                const extra = criticalStockItems.length > MAX_CRITICAL_ALERT ? `<li>... ve ${criticalStockItems.length - MAX_CRITICAL_ALERT} diğer</li>` : '';
+                alert.querySelector('.alert-text ul').innerHTML = list + extra;
+                alert.classList.add('show');
+            } else {
+                alert.classList.remove('show');
+            }
+        }
+
+        function toggleLowStock() {
+            showAllLowStock = !showAllLowStock;
+            updateDashboard();
+        }
+
+        function gotoLowStockList() {
+            showInventoryList();
+            const entries = Object.entries(categories);
+            for (const [key, cat] of entries) {
+                if (cat.data.some(it => it.quantity <= 5)) { currentCategory = key; break; }
+            }
+            document.getElementById('currentCategoryName').textContent = categories[currentCategory].name;
+            updateInventoryTable();
+            updateCategoryFilter();
+        }
+
+        // Inventory table update function
+        function updateInventoryTable() {
+            const inventory = categories[currentCategory].data;
+            const tableBody = document.getElementById('inventoryTable');
+
+            // Dynamically add Value column for specific categories
+            const header = document.getElementById('inventoryHeader');
+            const needsValue = ['capacitors', 'resistors', 'Inductors'].includes(currentCategory);
+            if (header) {
+                const base = `
+                            <tr>
+                                        <th>#</th>
+                                        <th>Parça Bilgisi</th>
+                                        <th>Miktar</th>
+                                        <th>Durum</th>
+                                        <th>Konum</th>
+                                        <th>Açıklama</th>
+                                        ${needsValue ? '<th>Değer</th>' : ''}
+                                        <th>İşlemler</th>
+                            </tr>`;
+                header.innerHTML = base;
+            }
+
+            tableBody.innerHTML = inventory.map((item, index) => {
+                const valueCell = needsValue ? `<td>${item.value || ''}</td>` : '';
+                const qtyDisplay = (item.quantity == null || Number.isNaN(item.quantity)) ? '100+' : item.quantity;
+                return `
+                <tr class="${getRowClass(item.quantity || 100)}">
+                    <td>${index + 1}</td>
+                    <td>
+                        <div class="part-name">${item.partName}</div>
+                        <div class="part-number">${item.partNumber}</div>
+                    </td>
+                    <td>
+                        <div class="quantity-container">
+                            <span class="quantity-number">${qtyDisplay}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${getStatusClass(item.quantity || 100)}">${getStockStatusText(item.quantity || 100)}</span>
+                    </td>
+                    <td>${item.location || '?'}</td>
+                    <td>${item.description || ''}</td>
+                    ${valueCell}
+                    <td>
+                        <div class="actions">
+                            <button class="action-button edit-button" onclick="editItem(${item.id})">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+                            <button class="action-button delete-button" onclick="deleteItem(${item.id})">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Update category filter options
+        function updateCategoryFilter() {
+            const inventory = categories[currentCategory].data;
+            const uniquePartNames = [...new Set(inventory.map(item => item.partName))];
+            const filter = document.getElementById('categoryFilter');
+
+            filter.innerHTML = '<option value="">Tüm Alt Kategoriler</option>' +
+                uniquePartNames.map(name => `<option value="${name}">${name}</option>`).join('');
+        }
+
+        // Modal functions
+        function showAddModal() {
+            document.getElementById('addModal').classList.add('show');
+        }
+
+        function hideAddModal() {
+            document.getElementById('addModal').classList.remove('show');
+            clearAddForm();
+        }
+
+        function showEditModal() {
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function hideEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            editingItemId = null;
+        }
+
+        function clearAddForm() {
+            document.getElementById('newPartNumber').value = '';
+            document.getElementById('newPartName').value = '';
+            document.getElementById('newQuantity').value = '';
+            document.getElementById('newLocation').value = '';
+            document.getElementById('newDescription').value = '';
+        }
+
+        // CRUD operations
+        function addItem() {
+            const partNumber = document.getElementById('newPartNumber').value;
+            const partName = document.getElementById('newPartName').value;
+            const quantity = parseInt(document.getElementById('newQuantity').value);
+            const location = document.getElementById('newLocation').value;
+            const description = document.getElementById('newDescription').value;
+
+            if (partNumber && partName && !isNaN(quantity)) {
+                const newItem = {
+                    id: Math.max(...categories[currentCategory].data.map(i => i.id), 0) + 1,
+                    partNumber,
+                    partName,
+                    quantity,
+                    location,
+                    description
+                };
+
+                categories[currentCategory].data.push(newItem);
+                updateInventoryTable();
+                updateCategoryFilter();
+                hideAddModal();
+
+                if (currentView === 'dashboard') {
+                    updateDashboard();
+                }
+
+                showSuccessMessage('Yeni parça başarıyla eklendi! HTML dosyasına kaydetmek için "HTML İndir" butonunu kullanın.');
+            } else {
+                alert('Lütfen tüm gerekli alanları doldurun.');
+            }
+        }
+
+        function editItem(id) {
+            const item = categories[currentCategory].data.find(i => i.id === id);
+            if (item) {
+                editingItemId = id;
+                document.getElementById('editPartNumber').value = item.partNumber;
+                document.getElementById('editPartName').value = item.partName;
+                document.getElementById('editQuantity').value = item.quantity;
+                document.getElementById('editLocation').value = item.location;
+                document.getElementById('editDescription').value = item.description;
+                showEditModal();
+            }
+        }
+
+        function updateItem() {
+            if (editingItemId) {
+                const itemIndex = categories[currentCategory].data.findIndex(i => i.id === editingItemId);
+                if (itemIndex !== -1) {
+                    categories[currentCategory].data[itemIndex] = {
+                        id: editingItemId,
+                        partNumber: document.getElementById('editPartNumber').value,
+                        partName: document.getElementById('editPartName').value,
+                        quantity: parseInt(document.getElementById('editQuantity').value),
+                        location: document.getElementById('editLocation').value,
+                        description: document.getElementById('editDescription').value
+                    };
+
+                    updateInventoryTable();
+                    updateCategoryFilter();
+                    hideEditModal();
+
+                    if (currentView === 'dashboard') {
+                        updateDashboard();
+                    }
+
+                    showSuccessMessage('Parça başarıyla güncellendi! HTML dosyasına kaydetmek için "HTML İndir" butonunu kullanın.');
+                }
+            }
+        }
+
+        function deleteItem(id) {
+            if (confirm('Bu parçayı silmek istediğinizden emin misiniz?')) {
+                categories[currentCategory].data = categories[currentCategory].data.filter(i => i.id !== id);
+                updateInventoryTable();
+                updateCategoryFilter();
+
+                if (currentView === 'dashboard') {
+                    updateDashboard();
+                }
+
+                showSuccessMessage('Parça başarıyla silindi! HTML dosyasına kaydetmek için "HTML İndir" butonunu kullanın.');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const filterTerm = document.getElementById('categoryFilter').value;
+            filterTable(searchTerm, filterTerm);
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', function () {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterTerm = this.value;
+            filterTable(searchTerm, filterTerm);
+        });
+
+        function filterTable(searchTerm, filterTerm) {
+            const inventory = categories[currentCategory].data;
+            const filteredInventory = inventory.filter(item => {
+                const matchesSearch = item.partName.toLowerCase().includes(searchTerm) ||
+                    item.partNumber.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm);
+                const matchesFilter = !filterTerm || item.partName === filterTerm;
+                return matchesSearch && matchesFilter;
+            });
+
+            const tableBody = document.getElementById('inventoryTable');
+            tableBody.innerHTML = filteredInventory.map((item, index) => `
+                <tr class="${getRowClass(item.quantity)}">
+                    <td>${index + 1}</td>
+                    <td>
+                        <div class="part-name">${item.partName}</div>
+                        <div class="part-number">${item.partNumber}</div>
+                    </td>
+                    <td>
+                        <div class="quantity-container">
+                            <span class="quantity-number">${item.quantity}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${getStatusClass(item.quantity)}">${getStockStatusText(item.quantity)}</span>
+                    </td>
+                    <td>${item.location}</td>
+                    <td>${item.description}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="action-button edit-button" onclick="editItem(${item.id})">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+                            <button class="action-button delete-button" onclick="deleteItem(${item.id})">
+                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1 1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Start with dashboard view
+            showDashboard();
+            await loadCsvDataAndMerge();
+            updateDashboard();
+            updateInventoryTable();
+            updateCategoryFilter();
+
+            // Set initial active nav button
+            document.querySelectorAll('.nav-button')[0].classList.add('active');
+            document.querySelectorAll('.nav-button')[1].classList.remove('active');
+        });
+    </script>
+    <!-- ==================== JavaScript BİTİŞ ==================== -->
+
+
+
+
+
+
+</body><!-- ==================== HTML BİTİŞ ==================== --></html>
