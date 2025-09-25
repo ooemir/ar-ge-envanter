@@ -1,4 +1,4 @@
-# Ar-Ge Envanter Sistemi
+# Elektronik Komponent Envanter ve Takip Platformu
 
 Basit, tek dosyalık bir envanter yönetimi. HTML içindeki gömülü JavaScript ile çalışır; CSV dosyalarınızı okuyup kategori ve ürünleri listeleyebilir, ekleme/düzenleme/silme yapabilirsiniz. İsterseniz verileri HTML içine gömüp tek dosya halinde paylaşabilirsiniz. Artık CSV dosyalarını hem kökten hem de `sample-db/` klasöründen otomatik olarak bulup yükler.
 
@@ -72,3 +72,4 @@ git push -u origin main
 - Kategori ekleme/silme, toplu veri güncelleme gibi ek fonksiyonlar eklenebilir.
 - Kodunuzu GitHub'da paylaşırken MIT lisansı ile açık kaynak sunabilirsiniz.
 - README dosyasını güncel tutun ve örnek ekran görüntüsü ekleyin.
+
