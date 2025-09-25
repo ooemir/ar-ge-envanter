@@ -1,0 +1,11 @@
+Alt Kategori,description,mpn,quantity,link
+RES Shunt,0.5W 0.100 OHMS 0.25% LVK (1206),LVK12R100CER,16,https://www.digikey.com/en/products/detail/ohmite/LVK12R100CER/11625321
+RES 1206,PTC RESET FUSE 6V 500MA 1206,1206L050YR,21,https://www.digikey.com/en/products/detail/littelfuse-inc/1206L050YR/455698
+RES 0402,RCC0402 100 10K 1% ET7 E3,RCC040210K0FKED,30,https://www.digikey.com/en/products/detail/vishay-dale/RCC040210K0FKED/12084235
+RES 0402,RCC0402 100 10R 1% ET7 E3,RCC040210R0FKED,100,https://www.digikey.com/en/products/detail/vishay-dale/RCC040210R0FKED/12084200
+RES 0402,RCC0402 100 1M0 1% ET7 E3,RCC04021M00FKED,20,https://www.digikey.com/en/products/detail/vishay-dale/RCC04021M00FKED/12084251
+RES 0402,RES 0 OHM JUMPER - 0402,RC0402JR-070RP,50,https://www.digikey.com/en/products/detail/yageo/RC0402JR-070RP/4935294?gclsrc=aw.ds&gad_source=1&gad_campaignid=21513785267&gclid=Cj0KCQjwtMHEBhC-ARIsABua5iSRBe17QHlKfnoe-GrXovCwwslLRXoybfwl_p176DEuIAugAJsa0EcaAvHvEALw_wcB
+RES 0603,RES 0 OHM JUMPER 1/10W 0603,RC0603JR-070RL,108,https://www.digikey.com/en/products/detail/yageo/RC0603JR-070RL/726675
+RES 0402,RES 0 OHM JUMPER 1/16W 0402,RC0402JR-070RL,345,https://www.digikey.com/en/products/detail/yageo/RC0402JR-070RL/726406
+RES 0402,RES 0 OHM JUMPER 1/16W 0402,RMCF0402ZT0R00,5,https://www.digikey.com/en/products/detail/stackpole-electronics-inc/RMCF0402ZT0R00/1756905
+RES 0805,RES 0 OHM JUMPER 1/8W 0805,RC0805FR-070RL,27,https://www.digikey.com/en/products/detail/yageo/RC0805FR-070RL/2827620
